@@ -32,7 +32,7 @@ typedef unsigned long long int ull;
 #define mod 1000000007
 
 
-int dp[101][1000001];
+int dp[1000001];
 
 int main()
 {
@@ -43,19 +43,17 @@ int main()
     {
         cin>>arr[i];
     }
-     
-    for (ll i=0; i<=n; i++) { dp[i][0] = 1; }
-    for (ll j=1; j<=sum; j++) { dp[0][j] = 0; }
     
-    for (ll i=1; i<=n; i++)
+    dp[0] = 1;
+    for (int i=0; i<n; i++)
     {
-        for (ll j=1; j<=sum; j++)
+        for (int x=0; x<=sum; x++)
         {
-            if (arr[i-1] <= j)
-                dp[i][j] = (dp[i-1][j] + dp[i][j-arr[i-1]]) % mod;
-            else
-                dp[i][j] = (dp[i-1][j]) % mod; 
+            if (x-arr[i] >= 0)
+                dp[x] += dp[x-arr[i]];
+            dp[x]%=mod;
         }
     }
-    cout << dp[n][sum];
+    
+    cout<<dp[sum]<<endl;
 }
