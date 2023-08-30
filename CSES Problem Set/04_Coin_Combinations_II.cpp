@@ -44,6 +44,9 @@ int main()
         cin>>arr[i];
     }
     
+    //dp[w] -> no of ordered ways to get sum w
+    //dp[w] = dp[w] + dp[w - coins[i]]
+    
     dp[0] = 1;
     for (int i=0; i<n; i++)
     {
@@ -54,6 +57,6 @@ int main()
             dp[x]%=mod;
         }
     }
-    
+
     cout<<dp[sum]<<endl;
 }
