@@ -1,4 +1,3 @@
-#include <bits/stdc++.h>
 #include <iostream>
 #include <string>
 #include <map>
@@ -11,49 +10,26 @@
 using namespace std;
 typedef long long int ll;
 
-int mod = 1e9 + 7;
-
-int getBestCandidate(map<int, int> &mp, int v)
-{
-    auto it = mp.lower_bound(v);
-    if (it==mp.begin())
-    {
-        return 0;
-    }
-    it--;
-    return it->second;
-}
-
-void insert(map<int, int> &mp, int v, int adv)
-{
-    if (mp[v] >= adv)
-        return;
-    mp[v] = adv;
-    auto it = mp.find(v);
-    it++;
-    while (it != mp.end() && adv >= it->second)
-    {
-        auto temp = it;
-        it++;
-        mp.erase(temp);
-    }
-}
-
 int solve(vector<ll> &arr, int n)
 {
-    vector<int> dp(n);
-    map<int, int> mp;
-    dp[0]=1;
-    mp[arr[0]]=1;
-    for (int i=1; i<n; i++)
+    vector<ll> dp;
+    dp.push_back(0);
+
+    for (int i=0; i<n; i++)
     {
-        dp[i] = 1 + getBestCandidate(mp, arr[i]);
-        insert(mp, arr[i], dp[i]);
+        auto it = lower_bound(dp.begin(), dp.end(), arr[i]);
+        if (it == dp.end())
+            dp.push_back(arr[i]);
+        else
+        {
+            int idx = it - dp.begin();
+            dp[idx] = min(dp[idx], arr[i]);
+        }
     }
 
-    return *max_element(dp.begin(), dp.end());
+    return dp.size()-1;
 }
-
+ 
 int main()
 {
     ios_base::sync_with_stdio(false);
@@ -65,7 +41,7 @@ int main()
     {
         cin>>arr[i];
     }
-
+ 
     cout<<solve(arr, n);
     
 }
